@@ -12,7 +12,7 @@ export class PipelineStack extends cdk.Stack {
         const buildOutput = new codepipeline.Artifact();
 
         const sourceAction = new codepipeline_actions.CodeStarConnectionsSourceAction({
-            actionName: "GitLab_source",
+            actionName: "GitHub_source",
             owner: "ebm5025",
             connectionArn: "arn:aws:codeconnections:us-east-1:534640013755:connection/f7533c2a-07a3-4aa0-98b2-fea51595c3f1",
             output: sourceOutput,
@@ -23,7 +23,8 @@ export class PipelineStack extends cdk.Stack {
 
         const pipelineProject = new codebuild.PipelineProject(this, "3PLBuildProject", {
             environment: {
-                buildImage: codebuild.LinuxBuildImage.STANDARD_7_0
+                buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
+                computeType: codebuild.ComputeType.MEDIUM
             }
         })
 
@@ -42,7 +43,7 @@ export class PipelineStack extends cdk.Stack {
                     actions: [sourceAction]
                 },
                 {
-                    stageName: "Build and Deploy",
+                    stageName: "Build-and-Deploy",
                     actions: [buildAction]
                 }
             ]
