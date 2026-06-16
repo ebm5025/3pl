@@ -7,7 +7,7 @@ phases:
       - echo "Installing global dependencies and setting up environment"
       - npm i -g aws-cdk
       - npm i -g playwright
-      - npm playwright install --with-deps
+      - playwright install --with-deps
   pre_build:
     commands:
       - echo "Installing microservices and frontend dependencies"
