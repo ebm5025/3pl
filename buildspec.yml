@@ -30,7 +30,8 @@ phases:
       - echo "--- PHASE 3 Infrastructure Deployment via AWS CDK ---"
       - cd $CODEBUILD_SRC_DIR/infra && npx cdk synth
       - cd $CODEBUILD_SRC_DIR/infra && npx cdk deploy --all --require-approval never
-      - aws s3 sync frontend/dist/frontend/ s3://YOUR_BUCKET_NAME --delete
+      - aws s3 sync frontend/dist/frontend/ s3://$BUCKET_NAME --delete
+      - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST_ID --paths "/*"
       - echo "--- PHASE 4 Integration & End-to-End (E2E) QA (later) ---"
 reports:
   3pl-unit-test-reports:
