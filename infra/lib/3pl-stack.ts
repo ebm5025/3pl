@@ -53,7 +53,7 @@ export class Logicistics3PLStack extends cdk.Stack {
             additionalBehaviors: {
                 // Proxy /api/* to API Gateway, bypassing cache
                 '/api/*': {
-                    origin: new origins.HttpOrigin(`${api.restApiId}.execute-api.${this.region}.amazonaws.com`),
+                    origin: new origins.HttpOrigin(`${inventoryApi.restApiId}.execute-api.${this.region}.amazonaws.com`),
                     viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.HTTPS_ONLY,
                     cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
                     allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
