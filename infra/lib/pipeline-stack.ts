@@ -3,6 +3,7 @@ import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import { Construct } from 'constructs';
+import { Policy, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
 
 export class PipelineStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -27,6 +28,22 @@ export class PipelineStack extends cdk.Stack {
                 computeType: codebuild.ComputeType.SMALL,
             }
         })
+
+        new Policy(this, 'CodeBuildCDKPolicy', {
+            statements: [
+                new PolicyStatement({
+                    actions: [
+                        "sts:AssumeRole",
+                        "ssm:GetParameter"
+                    ],
+                    resources: [
+                        `arn:aws:iam::${this.account}:role/cdk-hnb659fds-deploy-role-${this.account}-${this.region}`,
+                        `arn:aws:iam::${this.account}:role/cdk-hnb659fds-file-publishing-role-${this.account}-${this.region}`,
+                        `arn:aws:ssm:${this.region}:${this.account}:parameter/cdk-bootstrap/hnb659fds/version`
+                    ]
+                })
+            ]
+        }).attachToRole(pipelineProject.role as Role);
 
         const buildAction = new codepipeline_actions.CodeBuildAction({
             actionName: "Build_Test_and_Deploy",
