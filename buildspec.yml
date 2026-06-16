@@ -2,7 +2,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      node-js: 20
+      nodejs: 20
     commands:
       - echo "Installing global dependencies and setting up environment"
       - npm i -g aws-cdk
