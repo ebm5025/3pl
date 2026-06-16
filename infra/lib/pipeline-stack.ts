@@ -2,6 +2,7 @@ import * as cdk from "aws-cdk-lib";
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
+import * as ssm from "aws-cdk-lib/aws-ssm";
 import { Construct } from 'constructs';
 import { Policy, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
 
@@ -22,11 +23,22 @@ export class PipelineStack extends cdk.Stack {
             triggerOnPush: true
         });
 
+        const bucketName = ssm.StringParameter.valueForStringParameter(
+            this, '/3pl/frontend-bucket-name'
+        );
+        const distId = ssm.StringParameter.valueForStringParameter(
+            this, '/3pl/cloudfront-dist-id'
+        );
+
         const pipelineProject = new codebuild.PipelineProject(this, "3PLBuildProject", {
             environment: {
                 buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
                 computeType: codebuild.ComputeType.SMALL,
-            }
+            },
+            environmentVariables: {
+                BUCKET_NAME: { value: bucketName },
+                CLOUDFRONT_DIST_ID: { value: distId },
+            },
         })
 
         new Policy(this, 'CodeBuildCDKPolicy', {
