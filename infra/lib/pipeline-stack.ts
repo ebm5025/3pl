@@ -24,7 +24,7 @@ export class PipelineStack extends cdk.Stack {
         const pipelineProject = new codebuild.PipelineProject(this, "3PLBuildProject", {
             environment: {
                 buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
-                computeType: codebuild.ComputeType.MEDIUM
+                computeType: codebuild.ComputeType.MEDIUM,
             }
         })
 
