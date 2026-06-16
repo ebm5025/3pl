@@ -1,5 +1,6 @@
 import * as cdk from "aws-cdk-lib";
-import { Logicistics3PLStack } from "../lib/3pl-stack.js";
+import { Logicistics3PLStack } from "../lib/3pl-stack";
+import { PipelineStack } from "../lib/pipeline-stack";
 
 const app = new cdk.App();
 
@@ -16,3 +17,8 @@ new Logicistics3PLStack(app, "Mock3PLLogistics-stack", {
     ManagedBy: "AWS-CDK"
   }
 })
+
+new PipelineStack(app, "Mock3PL-Pipeline-Stack", {
+  env: deployEnv,
+  tags: { Project: "Mock3PLSystem", Environment: "CI-CD", ManagedBy: "AWS-CDK" }
+});
