@@ -1,0 +1,56 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      node-js: 20
+    commands:
+      - echo "Installing global dependencies and setting up environment"
+      - npm i -g aws-cdk
+      - npm i -g playwright
+      - npm playwright install --with-deps
+  pre-build:
+    commands:
+      - echo "Installing microservices and frontend dependencies"
+      - cd frontend && npm i && cd ..
+      - cd infra && npm i && cd ..
+      - echo " -- PHASE 1 Static code analysis --"
+      - cd frontend && npm run lint && cd ..
+      - cd backend && npm run lint && cd ..
+  build:
+    commands:
+      - echo "--- PHASE 2 Unit Testing & Coverage ---"
+      # Run Angular unit tests using a headless browser
+      - cd frontend && npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage && cd ..
+      # Run backend microservice tests
+      - cd backend && npm run test && cd ..
+
+      - echo "Compiling application binaries and production bundles..."
+      - cd frontend && npm run build -- --configuration=production && cd ..
+      - cd backend && npm run build && cd ..
+  post_build:
+    commands:
+      - echo "--- PHASE 3 Infrastructure Deployment via AWS CDK ---"
+      - cd infra
+      # Synthesize and deploy completely unattended without manual authorization prompts
+      - npx cdk synth
+      - npx cdk deploy --all --require-approval never
+      
+      - echo "--- PHASE 4 Integration & End-to-End (E2E) QA ---"
+      - cd ../frontend
+      # Trigger automated QA flows against the freshly deployed cloud environment
+      - npx playwright test
+reports:
+  3pl-unit-test-reports:
+    files:
+      - 'backend/coverage/junit.xml'
+      - 'frontend/js-reports/junit.xml'
+    file-format: 'JUNITXML'
+  3pl-coverage-reports:
+    files:
+      - 'backend/coverage/clover.xml'
+      - 'frontend/coverage/clover.xml'
+    file-format: 'CLOVERXML'
+artifacts:
+  files:
+    - 'frontend/dist/**/*'
+    - 'backend/dist/**/*'
