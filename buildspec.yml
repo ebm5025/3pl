@@ -11,35 +11,27 @@ phases:
   pre_build:
     commands:
       - echo "Installing microservices and frontend dependencies"
-      - cd frontend && npm i && cd ..
-      - cd infra && npm i && cd ..
-      - cd backend && npm i && cd ..
-      - echo " -- PHASE 1 Static code analysis --"
-      - cd frontend && npm run lint && cd ..
-      - cd backend && npm run lint && cd ..
+      - cd $CODEBUILD_SRC_DIR/frontend && npm i
+      - cd $CODEBUILD_SRC_DIR/infra && npm i
+      - cd $CODEBUILD_SRC_DIR/backend && npm i
+      - echo "-- PHASE 1 Static code analysis --"
+      - cd $CODEBUILD_SRC_DIR/frontend && npm run lint
+      - cd $CODEBUILD_SRC_DIR/backend && npm run lint
   build:
     commands:
       - echo "--- PHASE 2 Unit Testing & Coverage ---"
-      # Run Angular unit tests using a headless browser
-      - cd frontend && npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage && cd ..
-      # Run backend microservice tests
-      - cd backend && npm run test && cd ..
-
+      - cd $CODEBUILD_SRC_DIR/frontend && npm run test -- --watch=false --browsers=ChromeHeadless --codeCoverage
+      - cd $CODEBUILD_SRC_DIR/backend && npm run test
       - echo "Compiling application binaries and production bundles..."
-      - cd frontend && npm run build -- --configuration=production && cd ..
-      - cd backend && npm run build && cd ..
+      - cd $CODEBUILD_SRC_DIR/frontend && npm run build -- --configuration=production
+      - cd $CODEBUILD_SRC_DIR/backend && npm run build
   post_build:
     commands:
       - echo "--- PHASE 3 Infrastructure Deployment via AWS CDK ---"
-      - cd infra
-      # Synthesize and deploy completely unattended without manual authorization prompts
-      - npx cdk synth
-      - npx cdk deploy --all --require-approval never
-      
+      - cd $CODEBUILD_SRC_DIR/infra && npx cdk synth
+      - cd $CODEBUILD_SRC_DIR/infra && npx cdk deploy --all --require-approval never
       - echo "--- PHASE 4 Integration & End-to-End (E2E) QA ---"
-      - cd ../frontend
-      # Trigger automated QA flows against the freshly deployed cloud environment
-      - npx playwright test
+      - cd $CODEBUILD_SRC_DIR/frontend && npx playwright test
 reports:
   3pl-unit-test-reports:
     files:
