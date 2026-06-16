@@ -13,6 +13,7 @@ phases:
       - echo "Installing microservices and frontend dependencies"
       - cd frontend && npm i && cd ..
       - cd infra && npm i && cd ..
+      - cd backend && npm i && cd ..
       - echo " -- PHASE 1 Static code analysis --"
       - cd frontend && npm run lint && cd ..
       - cd backend && npm run lint && cd ..

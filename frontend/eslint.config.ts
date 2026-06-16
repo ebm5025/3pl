@@ -5,12 +5,12 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig([
     {
-        ignores: ["node_modules/**", "dist/**", "cdk.out/**"]
+        ignores: ["node_modules/**", "dist/**", "cdk.out/**"],
     },
     {
         files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
-        plugins: { js }, 
-        extends: ["js/recommended"], 
+        plugins: { js },
+        extends: ["js/recommended"],
         languageOptions: { globals: globals.node }
     },
     tseslint.configs.recommended,
