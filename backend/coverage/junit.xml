@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="0.00174775">
+    <testsuite name="src/index.spec.ts" timestamp="2026-06-16T20:04:15.583Z" hostname="Edwards-MacBook-Pro.local" tests="1" failures="0" errors="0" skipped="0" time="0.00174775">
+        <testcase classname="src/index.spec.ts" name="it adds 1 and 2" time="0.001013875">
+        </testcase>
+    </testsuite>
+</testsuites>
