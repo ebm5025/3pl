@@ -4,11 +4,11 @@ import { Logicistics3PLStack } from "../lib/3pl-stack.js";
 const app = new cdk.App();
 
 const deployEnv = {
-  account: process.env.CDK_DEFAULT_ACCOUNT || "",
+  account: process.env.CDK_DEFAULT_ACCOUNT || "534640013755",
   region: process.env.CDK_DEFAULT_REGION || 'us-east-1',
 };
 
-new Logicistics3PLStack(app, "3PLLogistics-stack", {
+new Logicistics3PLStack(app, "Mock3PLLogistics-stack", {
   env: deployEnv,
   tags: {
     Project: "Mock3PLSystem",

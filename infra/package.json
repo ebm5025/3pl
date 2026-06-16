@@ -15,12 +15,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "@types/node": "^20.19.43",
-    "aws-cdk-lib": "^2.259.0",
-    "typescript": "^5.8.0",
     "@eslint/js": "^10.0.1",
+    "@types/node": "^20.19.43",
+    "aws": "^0.0.3-2",
+    "aws-cdk-lib": "^2.259.0",
     "eslint": "^10.5.0",
     "globals": "^17.6.0",
+    "tsx": "^4.22.4",
+    "typescript": "^5.8.0",
     "typescript-eslint": "^8.61.1"
   }
 }

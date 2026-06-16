@@ -9,14 +9,17 @@
   "types": "index.d.ts",
   "scripts": {
     "test": "npm run test",
-    "build": "npm run tsc",
+    "build": "tsc",
     "lint": "eslint ."
   },
   "devDependencies": {
+    "@types/node": "^20.19.43",
     "@eslint/js": "^10.0.1",
     "eslint": "^10.5.0",
     "globals": "^17.6.0",
     "jiti": "^2.7.0",
+    "tsx": "^4.22.4",
+    "typescript": "^5.8.0",
     "typescript-eslint": "^8.61.1"
   }
 }
