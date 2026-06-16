@@ -4,6 +4,7 @@
 *.d.ts
 *.d.ts.map
 *.js
+*.js.map
 **/dist
 AWSCLIV2.pkg
 **/cdk.out
