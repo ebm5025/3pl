@@ -30,6 +30,13 @@ export class PipelineStack extends cdk.Stack {
             this, '/3pl/cloudfront-dist-id'
         );
 
+        const bucketNameLiteral = ssm.StringParameter.valueFromLookup(
+            this, '/3pl/frontend-bucket-name'
+        );
+        const distIdLiteral = ssm.StringParameter.valueFromLookup(
+            this, '/3pl/cloudfront-dist-id'
+        );
+
         const pipelineProject = new codebuild.PipelineProject(this, "3PLBuildProject", {
             environment: {
                 buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
@@ -46,12 +53,30 @@ export class PipelineStack extends cdk.Stack {
                 new PolicyStatement({
                     actions: [
                         "sts:AssumeRole",
-                        "ssm:GetParameter"
+                        "ssm:GetParameter",
                     ],
                     resources: [
                         `arn:aws:iam::${this.account}:role/cdk-hnb659fds-deploy-role-${this.account}-${this.region}`,
                         `arn:aws:iam::${this.account}:role/cdk-hnb659fds-file-publishing-role-${this.account}-${this.region}`,
                         `arn:aws:ssm:${this.region}:${this.account}:parameter/cdk-bootstrap/hnb659fds/version`
+                    ]
+                }),
+                new PolicyStatement({
+                    actions: [
+                        "s3:ListBucket",
+                        "s3:PutObject",
+                        "s3:DeleteObject",
+                        "s3:GetObject"
+                    ],
+                    resources: [
+                        `arn:aws:s3:::${bucketNameLiteral}`,
+                        `arn:aws:s3:::${bucketNameLiteral}/*`
+                    ]
+                }),
+                new PolicyStatement({
+                    actions: ["cloudfront:CreateInvalidation"],
+                    resources: [
+                        `arn:aws:cloudfront::${this.account}:distribution/${distIdLiteral}`
                     ]
                 })
             ]
