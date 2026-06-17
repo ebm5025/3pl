@@ -58,7 +58,9 @@ export class PipelineStack extends cdk.Stack {
                     resources: [
                         `arn:aws:iam::${this.account}:role/cdk-hnb659fds-deploy-role-${this.account}-${this.region}`,
                         `arn:aws:iam::${this.account}:role/cdk-hnb659fds-file-publishing-role-${this.account}-${this.region}`,
-                        `arn:aws:ssm:${this.region}:${this.account}:parameter/cdk-bootstrap/hnb659fds/version`
+                        `arn:aws:ssm:${this.region}:${this.account}:parameter/cdk-bootstrap/hnb659fds/version`,
+                        `arn:aws:ssm:${this.region}:${this.account}:parameter/3pl/frontend-bucket-name`,
+                        `arn:aws:ssm:${this.region}:${this.account}:parameter/3pl/cloudfront-dist-id`,
                     ]
                 }),
                 new PolicyStatement({

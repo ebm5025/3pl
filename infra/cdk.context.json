@@ -1,0 +1,4 @@
+{
+  "ssm:account=534640013755:parameterName=/3pl/frontend-bucket-name:region=us-east-1": "mock3pllogistics-stack-angular3plbucketff975ba5-qtkktlkbpfop",
+  "ssm:account=534640013755:parameterName=/3pl/cloudfront-dist-id:region=us-east-1": "EVB2HWX7M7MW7"
+}
